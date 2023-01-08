@@ -117,8 +117,8 @@
           </ul>
           <p>И всё это всего за 290 рублей в месяц</p>
           <button type="button" onclick="buySubs(1, false)" name="button" class="open_month">Оформить подписку на месяц</button>
-          <button type="button" onclick="buySubs(3, false)" name="button" class="open_month">Оформить подписку на 3 месяца</button>
-          <button type="button" onclick="buySubs(6, false)" name="button" class="open_month">Оформить подписку на 6 месяцев</button>
+          <button type="button" onclick="buySubs(2, false)" name="button" class="open_month">Оформить подписку на 3 месяца</button>
+          <button type="button" onclick="buySubs(3, false)" name="button" class="open_month">Оформить подписку на 6 месяцев</button>
         </div>
 
         <div class="wrap {% if app.user %}{% if not app.user.subscription == 0 %}hidden{% endif %}{% endif %}" style="margin-top: 50px; background-image: url('img/premium.jpg')">
@@ -147,8 +147,8 @@
           </ul>
           <p>И всё это всего за 490 рублей в месяц</p>
           <button type="button" onclick="buySubs(1, true)" name="button" class="open_month">Оформить подписку на месяц</button>
-          <button type="button" onclick="buySubs(3, true)" name="button" class="open_month">Оформить подписку на 3 месяца</button>
-          <button type="button" onclick="buySubs(6, true)" name="button" class="open_month">Оформить подписку на 6 месяцев</button>
+          <button type="button" onclick="buySubs(2, true)" name="button" class="open_month">Оформить подписку на 3 месяца</button>
+          <button type="button" onclick="buySubs(3, true)" name="button" class="open_month">Оформить подписку на 6 месяцев</button>
         </div>
 
         <div class="wrap new {% if app.user %}{% if app.user.subscription == 0 %}hidden{% endif %}{% endif %}">
@@ -244,7 +244,9 @@
       </div>
     </div>
     <script>
+      let isProdlit = false
       function prodlit(){
+        isProdlit = true
         for (let el of document.getElementsByClassName('wrap')) {
           el.classList.remove('hidden')
         }
@@ -254,7 +256,8 @@
           method: 'POST',
           body: JSON.stringify({
             type: type,
-            isPremium: isPremium
+            isPremium: isPremium,
+            isProdlit: isProdlit
           })
         })
         window.location.reload()

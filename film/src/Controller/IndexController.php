@@ -151,13 +151,33 @@ class IndexController extends AbstractController
         if (!key_exists('isPremium', $data) && !is_bool($data['isPremium'])) {
             throw new ApiException(message: 'Нет типа покупки подписки');
         }
+        if (!key_exists('isProdlit', $data) && !is_bool($data['isProdlit'])) {
+            throw new ApiException(message: '');
+        }
+        $isProdlit = $data['isProdlit'];
         $type = $data['isPremium'] ? \SubscriptionAccessType::VIP_SUBSCRIPTION->value : \SubscriptionAccessType::BASE_SUBSCRIPTION->value;
+        $user->setSubscription($type);
         if ($data["type"] == \BuySubscriptionType::ONE_MONTH->value) {
-            $user->setSubscription($type)->setSubscriptionEnd((new \DateTime())->modify('+1 month'));
+            if ($user->getSubscriptionEnd() and $isProdlit) {
+                $date = clone $user->getSubscriptionEnd();
+                $user->setSubscriptionEnd($date->modify('+1 month'));
+            } else {
+                $user->setSubscriptionEnd((new \DateTime())->modify('+1 month'));
+            }
         } else if ($data["type"] == \BuySubscriptionType::THREE_MONTH->value) {
-            $user->setSubscription($type)->setSubscriptionEnd((new \DateTime())->modify('+3 month'));
+            if ($user->getSubscriptionEnd() and $isProdlit) {
+                $date = clone $user->getSubscriptionEnd();
+                $user->setSubscriptionEnd($date->modify('+3 month'));;
+            } else {
+                $user->setSubscriptionEnd((new \DateTime())->modify('+3 month'));
+            }
         } else if ($data["type"] == \BuySubscriptionType::SIX_MONTH->value) {
-            $user->setSubscription($type)->setSubscriptionEnd((new \DateTime())->modify('+6 month'));
+            if ($user->getSubscriptionEnd() and $isProdlit) {
+                $date = clone $user->getSubscriptionEnd();
+                $user->setSubscriptionEnd($date->modify('+6 month'));
+            } else {
+                $user->setSubscriptionEnd((new \DateTime())->modify('+6 month'));
+            }
         }
         $entityManager->flush();
         return $this->json([]);
