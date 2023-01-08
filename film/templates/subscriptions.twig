@@ -1,0 +1,274 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <title>KINO.RU</title>
+    <link rel="stylesheet" href="css/subscriptions.css">
+    <meta name="viewport" content="initial-scale=1.0, maximum-scale=1.0">
+  </head>
+  <body>
+    <nav>
+      <ul>
+        <div class="nav">
+          <a href="index"><img src="img/logo.png" id="logo"></a>
+          <a id="catalog_button"><img src="img/catalog.png"><p>Каталог</p></a>
+          <a href="search"><img src="img/search.png"><p>Поиск</p></a>
+          <a href="favorites"><img src="img/favorites.png"><p>Избранное</p></a
+        </div>
+        <div class="account {% if app.user %}{% else %}hidden{% endif %}">
+          <img src="img/ava.jpg">
+          <div class="menu">
+            <div></div>
+            <div></div>
+            <div></div>
+          </div>
+        </div>
+        <ul id="catalog" class="hidden">
+          <li>
+            <a href="films">Фильмы</a>
+            <a href="films">Сериалы</a>
+            <a href="films">Мультфильмы</a>
+            <a href="compilations">Подборки</a>
+            <a href="new">Новинки</a>
+          </li>
+        </ul>
+        <div id="menu" class="hidden">
+            <li><a href="subscriptions">Подписки</a></li>
+            <li><a href="settings">Настройки</a></li>
+            <li><a href="{{ path('app_logout') }}" id="logOut">Выйти</a></li>
+        </div>
+        <div class="burger">
+          <div></div>
+          <div></div>
+          <div></div>
+        </div>
+        <ul class="list_burger hidden">
+          <li class="first_menu">
+            <a id="catalog_button_burger"><img src="img/catalog.png"><p>Каталог</p></a>
+            <div id="catalog_burger" class="hidden">
+
+                  <a href="films">Фильмы</a>
+                  <a href="films">Сериалы</a>
+                  <a href="films">Мультфильмы</a>
+                  <a href="compilations">Подборки</a>
+                  <a href="new">Новинки</a>
+
+            </div>
+            <a href="search"><img src="img/search.png"><p>Поиск</p></a>
+            <a href="favorites"><img src="img/favorites.png"><p>Избранное</p></a>
+          </li>
+
+          <li class="account_burger">
+              <img src="img/ava.jpg">
+              <div id="menu_burger" class="hidden">
+                    <a href="subscriptions">Подписки</a>
+                    <a href="settings">Настройки</a>
+                    <a id="logOut_burger">Выйти</a>
+              </div>
+          </li>
+
+        </ul>
+      </ul>
+
+
+      <script>
+        function catalogOn() {
+          document.querySelector('#catalog').classList.remove('hidden');
+        };
+        function catalogOff() {
+          document.querySelector('#catalog').classList.add('hidden');
+        };
+        document.querySelector('#catalog_button').onmouseenter = catalogOn;
+        document.querySelector('nav').onmouseleave = catalogOff;
+
+        document.querySelector('.account').onclick = menu;
+
+        function menu(){
+          document.querySelector('#menu').classList.toggle('hidden');
+        }
+      </script>
+    </nav>
+
+      <section id="main">
+        <h1>Управление подписками</h1>
+        <div class="wrap {% if app.user %}{% if not app.user.subscription == 0 %}hidden{% endif %}{% endif %}">
+          <h2>Базовая подписка KINO.RU</h2>
+          <ul class="bullets">
+            <li>
+              <img src="img/many.png">
+              <p>Более 80 000 сериалов и фильмов</p>
+            </li>
+            <li>
+              <img src="img/five.png">
+              <p>Одновременный просмотр на пяти устройствах</p>
+            </li>
+            <li>
+              <img src="img/hd.png">
+              <p>Максимальное качество изображения и звука</p>
+            </li>
+            <li>
+              <img src="img/no_ads.png">
+              <p>Нет рекламы</p>
+            </li>
+            <li>
+              <img src="img/download.png">
+              <p>Можно скачивать фильмы</p>
+            </li>
+          </ul>
+          <p>И всё это всего за 290 рублей в месяц</p>
+          <button type="button" onclick="buySubs(1, false)" name="button" class="open_month">Оформить подписку на месяц</button>
+          <button type="button" onclick="buySubs(3, false)" name="button" class="open_month">Оформить подписку на 3 месяца</button>
+          <button type="button" onclick="buySubs(6, false)" name="button" class="open_month">Оформить подписку на 6 месяцев</button>
+        </div>
+
+        <div class="wrap {% if app.user %}{% if not app.user.subscription == 0 %}hidden{% endif %}{% endif %}" style="margin-top: 50px; background-image: url('img/premium.jpg')">
+          <h2>Подписка Премиум KINO.RU</h2>
+          <ul class="bullets">
+            <li>
+              <img src="img/many.png">
+              <p>Более 150 000 сериалов и фильмов</p>
+            </li>
+            <li>
+              <img src="img/five.png">
+              <p>Одновременный просмотр на всех устройствах</p>
+            </li>
+            <li>
+              <img src="img/hd.png">
+              <p>Максимальное качество изображения и звука</p>
+            </li>
+            <li>
+              <img src="img/no_ads.png">
+              <p>Нет рекламы</p>
+            </li>
+            <li>
+              <img src="img/download.png">
+              <p>Можно скачивать фильмы</p>
+            </li>
+          </ul>
+          <p>И всё это всего за 490 рублей в месяц</p>
+          <button type="button" onclick="buySubs(1, true)" name="button" class="open_month">Оформить подписку на месяц</button>
+          <button type="button" onclick="buySubs(3, true)" name="button" class="open_month">Оформить подписку на 3 месяца</button>
+          <button type="button" onclick="buySubs(6, true)" name="button" class="open_month">Оформить подписку на 6 месяцев</button>
+        </div>
+
+        <div class="wrap new {% if app.user %}{% if app.user.subscription == 0 %}hidden{% endif %}{% endif %}">
+          <h3>Ваша {% if app.user %}{% if app.user.subscription == 1 %}<span>базовая<span>{% endif %}{% if app.user.subscription == 2 %}<span>премиум<span>{% endif %}{% endif %} подписка активна до {% if app.user %} {{ app.user.subscriptionEnd|date("d.m.Y")}} {% endif %}</h3>
+          <button type="button" onclick="prodlit()" name="button" class="open_month">Продлить подписку</button>
+        </div>
+      </section>
+
+    <footer>
+      <div class="help_doc">
+        <div class="help">
+          <p>Поддержка</p>
+          <p>support@kino.ru</p>
+          <p>8(888)888-88-88</p>
+        </div>
+        <div class="doc">
+          <p>©2020 ООО «Кино» 18+</p>
+          <a href="#">Пользовательские соглашения</a>
+          <a href="#">Политика конфиденциальности</a>
+        </div>
+      </div>
+    </footer>
+    <div class="wrapper_subscribe hidden">
+      <div class="modal subscribe hidden">
+        <p id="header_modal">Неограниченный доступ к фильмам и сериалам</p>
+        <div class="choice_card">
+          <p class="active" card="new">новая карта</p>
+          <p card="old">сохранённые карты</p>
+        </div>
+        <div class="cards">
+          <div class="new_card">
+            <div class="number">
+              <p>Номер карты</p>
+              <input type="text" placeholder="•••• •••• ••••  ••••">
+            </div>
+            <div class="bottom">
+              <div class="date">
+                <p>Срок действия</p>
+                <input type="text" placeholder="••/••">
+              </div>
+              <div class="cvc">
+                <p>CVC</p>
+                <input type="password" placeholder="•••">
+              </div>
+            </div>
+          </div>
+          <div class="old_card hidden">
+            <p>•••• •••• •••• 4014</p>
+            <div class="old_bottom">
+              <p>03/22</p>
+              <p>Mastercard</p>
+            </div>
+          </div>
+        </div>
+
+        <div class="save">
+          <div class="check_save">
+            <div>
+
+            </div>
+          </div>
+          <p>сохранить карту</p>
+        </div>
+        <script>
+          document.querySelector('.save').addEventListener('click', ()=>{
+            document.querySelector('.check_save > div').classList.toggle('active');
+          });
+        </script>
+        <script>
+          document.querySelectorAll('.choice_card > p').forEach(e=> {
+            e.onclick = (e) => {
+              document.querySelectorAll('.choice_card > p').forEach(e => {
+                e.classList.remove('active');
+              });
+              e.target.classList.add('active');
+              let card = e.target.getAttribute('card');
+              console.log(card);
+              if(card == 'new'){
+                document.querySelector('.new_card').classList.remove('hidden');
+                document.querySelector('.old_card').classList.add('hidden');
+                document.querySelector('.save').classList.remove('hidden');
+              }
+              if(card == 'old'){
+                document.querySelector('.old_card').classList.remove('hidden');
+                document.querySelector('.new_card').classList.add('hidden');
+                document.querySelector('.save').classList.add('hidden');
+              }
+            }
+          })
+        </script>
+        <button type="button" id="pay">Оплатить</button>
+        <img src="img/close.png" class="close" id="close_subscr">
+      </div>
+    </div>
+    <script>
+      function prodlit(){
+        for (let el of document.getElementsByClassName('wrap')) {
+          el.classList.remove('hidden')
+        }
+      }
+      async function buySubs(type, isPremium){
+        let data = await fetch('{{ path('buy_subscription') }}', {
+          method: 'POST',
+          body: JSON.stringify({
+            type: type,
+            isPremium: isPremium
+          })
+        })
+        window.location.reload()
+      }
+
+    </script>
+    <script>
+      document.querySelector('.burger').addEventListener('click', ()=>{
+        document.querySelector('.burger').classList.toggle('active');
+        document.querySelector('.list_burger').classList.toggle('hidden');
+      });
+      document.querySelector('#catalog_button_burger').addEventListener('click', ()=>{
+        document.querySelector('#catalog_burger').classList.toggle('hidden');
+      });
+    </script>
+  </body>
+</html>

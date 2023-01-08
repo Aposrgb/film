@@ -1,0 +1,12 @@
+@font-face {
+    font-family: 'Klein';
+    src: url('../fonts/kleintext.ttf') format('truetype');
+    font-weight: 300;
+    font-style: normal;
+}
+@font-face {
+    font-family: 'Klein';
+    src: url('../fonts/kleinbold.ttf') format('truetype');
+    font-weight: 600;
+    font-style: normal;
+}

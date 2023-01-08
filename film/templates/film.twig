@@ -1,0 +1,392 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>KINO.RU</title>
+    <link rel="stylesheet" href="css/film.css">
+    <meta name="viewport" content="initial-scale=1.0, maximum-scale=1.0">
+</head>
+<body>
+<nav>
+    <ul>
+        <div class="nav">
+            <a href="index"><img src="img/logo.png" id="logo"></a>
+            <a id="catalog_button"><img src="img/catalog.png">
+                <p>Каталог</p></a>
+            <a href="search"><img src="img/search.png">
+                <p>Поиск</p></a>
+            <a href="favorites"><img src="img/favorites.png">
+                <p>Избранное</p></a
+        </div>
+        <div class="login {% if app.user %}hidden{% endif %}">
+            <button type="button" name="button" id="login">Вход</button>
+            <button type="button" name="button" id="signup">Регистрация</button>
+        </div>
+        <div class="account {% if app.user %}{% else %}hidden{% endif %}">
+            <img src="img/ava.jpg">
+            <div class="menu">
+                <div></div>
+                <div></div>
+                <div></div>
+            </div>
+        </div>
+        <ul id="catalog" class="hidden">
+            <li>
+                <a href="films">Фильмы</a>
+                <a href="films">Сериалы</a>
+                <a href="films">Мультфильмы</a>
+                <a href="compilations">Подборки</a>
+                <a href="new">Новинки</a>
+            </li>
+        </ul>
+        <div id="menu" class="hidden">
+            <li><a href="subscriptions">Подписки</a></li>
+            <li><a href="settings">Настройки</a></li>
+            <li><a href="{{ path('app_logout') }}" id="logOut">Выйти</a></li>
+        </div>
+        <div class="burger">
+            <div></div>
+            <div></div>
+            <div></div>
+        </div>
+        <ul class="list_burger hidden">
+            <li class="first_menu">
+                <a id="catalog_button_burger"><img src="img/catalog.png">
+                    <p>Каталог</p></a>
+                <div id="catalog_burger" class="hidden">
+
+                    <a href="films">Фильмы</a>
+                    <a href="films">Сериалы</a>
+                    <a href="films">Мультфильмы</a>
+                    <a href="compilations">Подборки</a>
+                    <a href="new">Новинки</a>
+
+                </div>
+                <a href="search"><img src="img/search.png">
+                    <p>Поиск</p></a>
+                <a href="favorites"><img src="img/favorites.png">
+                    <p>Избранное</p></a>
+            </li>
+
+            <li class="login_burger">
+                <button type="button" name="button" id="login_burger">Вход</button>
+                <button type="button" name="button" id="signup_burger">Регистрация</button>
+            </li>
+
+            <li class="account_burger hidden">
+                <img src="img/ava.jpg">
+                <div id="menu_burger" class="hidden">
+                    <a href="subscriptions">Подписки</a>
+                    <a href="settings">Настройки</a>
+                    <a id="logOut_burger">Выйти</a>
+                </div>
+            </li>
+
+        </ul>
+    </ul>
+
+
+</nav>
+
+<section id="main">
+    <div class="head_image" {% if (film is defined) and film %}style="background-image: url({{ img }})" {% endif %}>
+        <h1>{% if (film is defined) and film %}{{ film.name }}{% else %}Остров фантазий{% endif %}</h1>
+        <p>США, 2020, 109 мин.</p>
+        <button type="button" onclick="checkFilm()" style="position: relative;top: -75px;left: 1000px;font-size: 25px;border: none;" id="login">
+            {% if film.price == 0 and film.subscriptionAccess == 0 %}Бесплатно{% endif %}
+            {% if film.subscriptionAccess == 1 and app.user and app.user.subscription == 1 %}Просмотр доступен по подписке{% endif %}
+            {% if film.subscriptionAccess == 2 and app.user and app.user.subscription == 2 %}Просмотр доступен по подписке{% endif %}
+            {% if film.subscriptionAccess == 1 and app.user and app.user.subscription == 2 %}Просмотр доступен по подписке{% endif %}
+            {% if film.subscriptionAccess == 1 and app.user and app.user.subscription == 0 %}Подписка{% endif %}
+            {% if film.subscriptionAccess == 2 and app.user and app.user.subscription == 1 %}Подписка премиум{% endif %}
+            {% if film.subscriptionAccess == 2 and app.user and app.user.subscription == 0 %}Подписка премиум{% endif %}
+            {% if film.subscriptionAccess == 0 and not film.price == 0 and filmBuyed is defined and filmBuyed == false %}{{ film.price }}руб{% endif %}
+            {% if filmBuyed is defined and filmBuyed == true %}Куплено{% endif %}
+        </button>
+    </div>
+    <div class="content">
+        <div class="rates">
+            <div>
+                <p>Кинопоиск: {% if (film is defined) and film %}{{ k }}{% else %}7.1{% endif %}</p>
+                <img src="img/star.png">
+            </div>
+            <div>
+                <p>IMDb: {% if (film is defined) and film %}{{ i }}{% else %}6.5{% endif %}</p>
+                <img src="img/star.png">
+            </div>
+        </div>
+        <ul class="descript">
+            <li>
+                <p class="option">Жанр:</p>
+                <p id="janr" class="descr"><span>Триллер</span>, <span>Фантастика</span></p>
+            </li>
+            <li>
+                <p class="option">Описание:</p>
+                <p class="descr">{% if (film is defined) and film %}{{ desc }}{% else %}Загадочный мистер Рорк воплощает в жизнь самые смелые и тайные мечты своих постояльцев на роскошном труднодоступном тропическом курорте. Но будут ли готовы гости разгадать тайну острова и спасти свои жизни, когда их фантазии обернутся кошмаром?{% endif %}</p>
+            </li>
+            <li>
+                <p class="option">Режиссёр:</p>
+                <p class="descr">{% if (film is defined) and film %}{{ rej }}{% else %}Джефф Уодлоу{% endif %}</p>
+            </li>
+            <li>
+                <p class="option">В ролях:</p>
+                <p class="descr">{% if (film is defined) and film %}{{ actor }}{% else %}Майкл Пенья, Мэгги Кью, Люси Хейл, Остин Стоуэлл, Портия Даблдэй, Джимми О. Ян, Райан Хансен, Майкл Рукер, Париса Фитц-Хенли, Майк Фогель{% endif %}</p>
+            </li>
+        </ul>
+        <div class="filme">
+            <div class="buttons">
+                <button type="button" name="button" class="watch" id="button_trailer">Смотреть трейлер</button>
+                {% if film.price == 0 and film.subscriptionAccess == 0 %}<button type="button" name="button" class="watch" id="button_film">Смотреть фильм</button>{% endif %}
+                {% if film.subscriptionAccess == 1 and app.user and app.user.subscription == 1 %}<button type="button" name="button" class="watch" id="button_film">Смотреть фильм</button>{% endif %}
+                {% if film.subscriptionAccess == 2 and app.user and app.user.subscription == 2 %}<button type="button" name="button" class="watch" id="button_film">Смотреть фильм</button>{% endif %}
+                {% if film.subscriptionAccess == 1 and app.user and app.user.subscription == 2 %}<button type="button" name="button" class="watch" id="button_film">Смотреть фильм</button>{% endif %}
+                {% if filmBuyed is defined and filmBuyed == true %}<button type="button" name="button" class="watch" id="button_film">Смотреть фильм</button>{% endif %}
+                <button type="button" name="button" class="tofavorites">
+                    <div id="save"></div>
+                    В избранное
+                </button>
+            </div>
+            <div class="screen">
+                <div id="trailer">
+                    <iframe src="{% if (film is defined) and film %}{{ trailer }}{% else %}https://www.youtube.com/embed/vWeIZ9MjiBs{% endif %}" frameborder="0"
+                            allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture"
+                            allowfullscreen></iframe>
+                </div>
+                <div id="film">
+                    <iframe src="https://www.youtube.com/embed/O6LjIY6AWVI" frameborder="0"
+                            allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture"
+                            allowfullscreen></iframe>
+                </div>
+            </div>
+            <a href="#" id="download" class="hidden">Скачать фильм</a>
+        </div>
+        <script>
+            document.querySelector('#button_film').addEventListener('click', () => {
+                document.querySelector('#trailer').classList.add('hidden');
+                document.querySelector('#film').classList.add('active');
+            });
+            document.querySelector('#button_trailer').addEventListener('click', () => {
+                document.querySelector('#trailer').classList.remove('hidden');
+                document.querySelector('#film').classList.remove('active');
+            });
+            document.querySelector('.tofavorites').addEventListener('click', () => {
+                document.querySelector('#save').classList.toggle('active');
+            });
+        </script>
+
+    </div>
+    <div class="compilation now">
+        <p>Похожее</p>
+        <ul slide="1" slides="0">
+            <li>
+                <img src="img/it.jpg" class="film">
+                <p class="film_name"><a href="film?id=11">Оно 2</a></p>
+                <p class="film_type film_buy">покупка</p>
+                <div class="fav"></div>
+            </li>
+            <li>
+                <img src="img/train_to_busan.jpg" class="film">
+                <p class="film_name"><a href="film?id=12">Поезд в Пусан</a></p>
+                <p class="film_type film_free">бесплатно</p>
+                <div class="fav"></div>
+            </li>
+            <li>
+                <img src="img/meg.jpg" class="film">
+                <p class="film_name"><a href="film?id=13">Мег: монстр глубины</a></p>
+                <p class="film_type film_free">бесплатно</p>
+                <div class="fav"></div>
+            </li>
+            <li>
+                <img src="img/zov_predkov.jpg" class="film">
+                <p class="film_name"><a href="film?id=4">Зов предков</a></p>
+                <p class="film_type film_buy">покупка</p>
+                <div class="fav"></div>
+            </li>
+        </ul>
+        <img src="img/arrow.png" class="slide_next">
+        <img src="img/arrow.png" class="slide_prev">
+    </div>
+    <script src="js/slider.js"></script>
+</section>
+<section id="comments">
+    <h2>Комментарии</h2>
+    <h3>Авторизуйтесь, чтобы прокомментировать</h3>
+    <textarea name="name" rows="8" cols="80" placeholder="Введите ваш комментарий..." class="hidden"></textarea>
+    <button type="button" name="button" id="add_comm" class="hidden">Добавить комментарий</button>
+</section>
+<script>
+    let htmlCom;
+    if (localStorage.getItem('comment') == null) {
+        htmlCom = "";
+    } else {
+        htmlCom = localStorage.getItem('comment');
+    }
+    document.querySelector('#comments').insertAdjacentHTML('beforeend', htmlCom);
+    document.querySelector('#add_comm').addEventListener('click', () => {
+        if (localStorage.getItem('comment') == null) {
+            htmlCom = "";
+        } else {
+            htmlCom = localStorage.getItem('comment');
+        }
+        let comment = document.querySelector('textarea').value;
+        let newCom = '<div class="review"><div class="review_img"></div><div class="review_text"><h4>Данил Курганов</h4><p>' + comment + '</p></div></div>';
+        document.querySelector('#comments').insertAdjacentHTML('beforeend', newCom);
+
+        let newHtmlCom = htmlCom + newCom;
+        localStorage.setItem('comment', newHtmlCom);
+    });
+    async function checkFilm(){
+        {% if film.subscriptionAccess == 1 and app.user and app.user.subscription == 0 %}window.location.href = '{{ path('subscriptions') }}'{% endif %}
+        {% if film.subscriptionAccess == 2 and app.user and app.user.subscription == 1 %}window.location.href = '{{ path('subscriptions') }}'{% endif %}
+        {% if film.subscriptionAccess == 2 and app.user and app.user.subscription == 0 %}window.location.href = '{{ path('subscriptions') }}'{% endif %}
+        {% if film.subscriptionAccess == 0 and not film.price == 0  and filmBuyed is defined and filmBuyed == false %}
+        await fetch('{{ path('buy_film', { film: film.id}) }}', {
+            method: "POST"
+        })
+        window.location.reload()
+        {% endif %}
+    }
+</script>
+<footer>
+    <div class="help_doc">
+        <div class="help">
+            <p>Поддержка</p>
+            <p>support@kino.ru</p>
+            <p>8(888)888-88-88</p>
+        </div>
+        <div class="doc">
+            <p>©2020 ООО «Кино» 18+</p>
+            <a href="#">Пользовательские соглашения</a>
+            <a href="#">Политика конфиденциальности</a>
+        </div>
+    </div>
+</footer>
+<div class="wrapper_login {% if (error is defined) and (error) %}{% else %}hidden{% endif %}">
+    <div class="modal login {% if (error is defined) and (error) %}{% else %}hidden{% endif %}">
+        <p>Войдите для доступа к просмотру, загрузкам и избранному</p>
+
+        <form class="form_modal" method="post" action="{{ path('app_login') }}">
+            {% if (error is defined) and (error) %}
+                <div style="color: red"
+                     class="alert alert-danger">{{ error.messageKey|trans(error.messageData, 'security') }}</div>
+            {% endif %}
+            <label style="color: white" for="inputEmail">Email</label>
+            <input type="email" value="{{ last_username ?? '' }}" name="email" id="inputEmail" class="form-control"
+                   autocomplete="email" required autofocus>
+            <label style="color: white" for="inputPassword">Пароль</label>
+            <input type="password" name="password" id="inputPassword" class="form-control"
+                   autocomplete="current-password" required>
+
+            <input type="hidden" name="_csrf_token"
+                   value="{{ csrf_token('authenticate') }}"
+            >
+
+            <button class="btn btn-lg btn-primary" type="submit">
+                Вход
+            </button>
+        </form>
+
+        <div class="or">
+            <div></div>
+            <p>или</p>
+            <div></div>
+        </div>
+        <p>Войдите с помощью соц.сетей</p>
+        <div class="social_modal">
+            <a href="https://vk.com" target="_blank"><img src="img/vk.png"></a>
+            <a href="https://facebook.com" target="_blank"><img src="img/fb.png"></a>
+            <a href="https://twitter.com" target="_blank"><img src="img/twitter.png"></a>
+            <a href="https://instagram.com" target="_blank"><img src="img/inst.png"></a>
+            <a href="https://youtube.com" target="_blank"><img src="img/yt.png"></a>
+        </div>
+        <p>Ещё нет аккаунта? <span id="toSignup">Зарегистрируйтесь</span></p>
+        <img src="img/close.png" class="close" id="close_login">
+    </div>
+</div>
+<div class="wrapper_signup hidden">
+    <div class="modal hidden signup">
+        <p>Зарегистрируйтесь для просмотра <br>и загрузки фильмов и сериалов</p>
+        <div id="success" style="color: green; display: none" class="alert alert-danger">Успешно</div>
+        <div class="form_modal">
+            <input type="text" id="regEmail" name="login" placeholder="E-mail">
+            <input type="password" id="regPassword" name="password" placeholder="Пароль">
+            <p>не менее 8 символов</p>
+            <div class="agree">
+                <div class="check"></div>
+                <p>Я согласен с условиями пользовательского соглашения и даю согласие на обработку моих персональных
+                    данных</p>
+            </div>
+
+            <button name="button" id="re">Зарегистрироваться</button>
+            <img onclick="openPass()" src="img/show.png" class="show_modal">
+        </div>
+        <div class="or">
+            <div></div>
+            <p>или</p>
+            <div></div>
+        </div>
+        <p>Зарегистрируйтесь с помощью соц.сетей</p>
+        <div class="social_modal">
+            <a href="https://vk.com" target="_blank"><img src="img/vk.png"></a>
+            <a href="https://facebook.com" target="_blank"><img src="img/fb.png"></a>
+            <a href="https://twitter.com" target="_blank"><img src="img/twitter.png"></a>
+            <a href="https://instagram.com" target="_blank"><img src="img/inst.png"></a>
+            <a href="https://youtube.com" target="_blank"><img src="img/yt.png"></a>
+        </div>
+        <p>Уже зарегистрированы? <span id="toLogin">Войти в аккаунт</span></p>
+        <img src="img/close.png" class="close" id="close_signup">
+    </div>
+</div>
+<script>
+    document.querySelector('#re').addEventListener('click', () => {
+        document.querySelector('#download').classList.remove('hidden');
+        document.querySelector('h3').classList.add('hidden');
+        document.querySelector('textarea').classList.remove('hidden');
+        document.querySelector('#add_comm').classList.remove('hidden');
+    });
+    // document.querySelector('#in').addEventListener('click', ()=>{
+    //   document.querySelector('#download').classList.remove('hidden');
+    //   document.querySelector('h3').classList.add('hidden');
+    //   document.querySelector('textarea').classList.remove('hidden');
+    //   document.querySelector('#add_comm').classList.remove('hidden');
+    // });
+    document.querySelector('#logOut').addEventListener('click', () => {
+        document.querySelector('#download').classList.add('hidden');
+        document.querySelector('h3').classList.remove('hidden');
+        document.querySelector('textarea').classList.add('hidden');
+        document.querySelector('#add_comm').classList.add('hidden');
+    });
+    document.querySelector('#logOut_burger').addEventListener('click', () => {
+        document.querySelector('#download').classList.add('hidden');
+    });
+</script>
+<script src="js/modal.js"></script>
+<script>
+    function htmlDecode(input) {
+        var e = document.createElement('div');
+        e.innerHTML = input;
+        return e.childNodes[0].nodeValue;
+    }
+
+    document.addEventListener('DOMContentLoaded', () => {
+        {% if (film is defined) and film %}document.getElementById('janr').innerHTML = htmlDecode('{{ janr }}');{% endif %}
+        document.getElementById('re').addEventListener('click', async (e) => {
+            let email = document.getElementById('regEmail').value
+            let password = document.getElementById('regPassword').value
+            let data = await fetch('{{ path('reg') }}', {
+                method: 'POST',
+                body: JSON.stringify({
+                    email: email,
+                    password: password
+                })
+            }).catch(reason => reason)
+            if (data.status === 200) {
+                document.getElementById('success').style.display = 'block'
+            } else {
+
+            }
+        });
+    })
+</script>
+</body>
+</html>

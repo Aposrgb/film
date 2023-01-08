@@ -1,0 +1,208 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <title>KINO.RU</title>
+  <link rel="stylesheet" href="css/settings.css">
+  <meta name="viewport" content="initial-scale=1.0, maximum-scale=1.0">
+</head>
+  <body>
+      <nav>
+        <ul>
+          <div class="nav">
+            <a href="index"><img src="img/logo.png" id="logo"></a>
+            <a id="catalog_button"><img src="img/catalog.png"><p>Каталог</p></a>
+            <a href="search"><img src="img/search.png"><p>Поиск</p></a>
+            <a href="favorites"><img src="img/favorites.png"><p>Избранное</p></a>
+          </div>
+          <div class="account {% if app.user %}{% else %}hidden{% endif %}">
+            <img src="img/ava.jpg">
+            <div class="menu">
+              <div></div>
+              <div></div>
+              <div></div>
+            </div>
+          </div>
+          <ul id="catalog" class="hidden">
+            <li>
+              <a href="films">Фильмы</a>
+              <a href="films">Сериалы</a>
+              <a href="films">Мультфильмы</a>
+              <a href="compilations">Подборки</a>
+              <a href="new">Новинки</a>
+            </li>
+          </ul>
+          <div id="menu" class="hidden">
+              <li><a href="subscriptions">Подписки</a></li>
+              <li><a href="settings">Настройки</a></li>
+              <li><a href="{{ path('app_logout') }}" id="logOut">Выйти</a></li>
+          </div>
+          <div class="burger">
+            <div></div>
+            <div></div>
+            <div></div>
+          </div>
+          <ul class="list_burger hidden">
+            <li class="first_menu">
+              <a id="catalog_button_burger"><img src="img/catalog.png"><p>Каталог</p></a>
+              <div id="catalog_burger" class="hidden">
+
+                    <a href="films">Фильмы</a>
+                    <a href="films">Сериалы</a>
+                    <a href="films">Мультфильмы</a>
+                    <a href="compilations">Подборки</a>
+                    <a href="new">Новинки</a>
+
+              </div>
+              <a href="search"><img src="img/search.png"><p>Поиск</p></a>
+              <a href="favorites"><img src="img/favorites.png"><p>Избранное</p></a>
+            </li>
+
+            <li class="account_burger">
+                <img src="img/ava.jpg">
+                <div id="menu_burger" class="hidden">
+                      <a href="subscriptions">Подписки</a>
+                      <a href="settings">Настройки</a>
+                      <a href="index" id="logOut_burger">Выйти</a>
+                </div>
+            </li>
+
+          </ul>
+        </ul>
+
+        <script>
+          function catalogOn() {
+            document.querySelector('#catalog').classList.remove('hidden');
+          };
+          function catalogOff() {
+            document.querySelector('#catalog').classList.add('hidden');
+          };
+          document.querySelector('#catalog_button').onmouseenter = catalogOn;
+          document.querySelector('nav').onmouseleave = catalogOff;
+
+          document.querySelector('.account').onclick = menu;
+
+          function menu(){
+            document.querySelector('#menu').classList.toggle('hidden');
+          }
+        </script>
+      </nav>
+
+      <section id="main">
+        <h1>Настройки</h1>
+        <div class="wrap">
+          <div class="saved_cards">
+            <h2>Сохранённые карты</h2>
+            <div class="cards">
+              <div class="added card">
+                <p>•••• •••• ••••  4014</p>
+                <div class="card_bottom">
+                  <p>03/22</p>
+                  <p>Mastercard</p>
+                </div>
+                <img src="img/close.png" id="delete_card">
+              </div>
+              <div class="card add">
+                <img src="img/close.png" id="add_card">
+                <p>Добавить карту</p>
+              </div>
+            </div>
+            <script>
+              document.querySelector('#delete_card').onclick = ()=>{
+                document.querySelector('.added').classList.add('hidden');
+              };
+              document.querySelector('#add_card').onclick = ()=>{
+                document.querySelector('.added').classList.remove('hidden');
+              };
+            </script>
+          </div>
+          <div class="active_devices">
+            <h2>Активные устройства</h2>
+            <p>Вы можете подключить до 5 устройств к одному аккаунту</p>
+            <div class="devices">
+              <div class="device">
+                <img src="img/apple.png">
+                <p>Apple iPhone XS</p>
+              </div>
+            </div>
+          </div>
+          <div class="change_pass">
+            <h2>Смена пароля</h2>
+            <h3 id="operation" style="color:white;display: none"></h3>
+            <p>Пароль должен состоять из латинских букв, цифр и специальных символов. Длина не менее 6 символов.</p>
+            <input type="password" id="old" name="old" placeholder="Старый пароль">
+            <input type="password" id="new" name="old" placeholder="Новый пароль">
+            <input type="password" id="again" name="old" placeholder="Повторите новый пароль">
+            <button onclick="sendPass()" type="button" name="button">Сохранить</button>
+          </div>
+          <div class="change_pass">
+            <button style="background: red" onclick="deleteProfile()" type="button" name="button">Удалить аккаунт</button>
+          </div>
+        </div>
+      </section>
+
+    <footer>
+      <div class="help_doc">
+        <div class="help">
+          <p>Поддержка</p>
+          <p>support@kino.ru</p>
+          <p>8(888)888-88-88</p>
+        </div>
+        <div class="doc">
+          <p>©2020 ООО «Кино» 18+</p>
+          <a href="#">Пользовательские соглашения</a>
+          <a href="#">Политика конфиденциальности</a>
+        </div>
+      </div>
+    </footer>
+    <script>
+      async function deleteProfile(){
+        await fetch('{{ path('app_logout') }}')
+        let data = await fetch('{{ path('delete_profile', { user: app.user.id}) }}', {
+          method: "DELETE"
+        })
+        if(data.status === 200){
+          window.location.href = '{{ path('index') }}'
+        }
+      }
+      async function sendPass(){
+        let old = document.getElementById('old').value;
+        let newPass = document.getElementById('new').value;
+        let again = document.getElementById('again').value;
+        if(again !== newPass){
+          document.getElementById('operation').innerText = 'Пароли не совпадают'
+          document.getElementById('operation').style.display = 'block'
+          return
+        }
+        if(newPass.length < 6){
+          document.getElementById('operation').innerText = 'Пароли должны быть больше 6'
+          document.getElementById('operation').style.display = 'block'
+          return
+        }
+        let data = await fetch('{{ path('reset_pass') }}', {
+          method: "POST",
+          body: JSON.stringify({
+            password: newPass,
+            old: old
+          })
+        })
+        if(data.status === 200){
+          document.getElementById('operation').innerText = 'Успешно'
+          document.getElementById('operation').style.display = 'block'
+        } else {
+          data = await data.json()
+          document.getElementById('operation').innerText = data['message']
+          document.getElementById('operation').style.display = 'block'
+        }
+      }
+      document.querySelector('.burger').addEventListener('click', ()=>{
+        document.querySelector('.burger').classList.toggle('active');
+        document.querySelector('.list_burger').classList.toggle('hidden');
+      });
+      document.querySelector('#catalog_button_burger').addEventListener('click', ()=>{
+        document.querySelector('#catalog_burger').classList.toggle('hidden');
+      });
+    </script>
+
+  </body>
+</html>

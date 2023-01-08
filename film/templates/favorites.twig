@@ -1,0 +1,206 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <title>KINO.RU</title>
+    <link rel="stylesheet" href="css/favorites.css">
+    <meta name="viewport" content="initial-scale=1.0, maximum-scale=1.0">
+  </head>
+  <body>
+    <nav>
+      <ul>
+        <div class="nav">
+          <a href="index"><img src="img/logo.png" id="logo"></a>
+          <a id="catalog_button"><img src="img/catalog.png"><p>Каталог</p></a>
+          <a href="search"><img src="img/search.png"><p>Поиск</p></a>
+          <a href="favorites" class="now"><img src="img/favorites.png"><p>Избранное</p></a>
+        </div>
+        <div class="login {% if app.user %}hidden{% endif %}">
+          <button type="button" name="button" id="login">Вход</button>
+          <button type="button" name="button" id="signup">Регистрация</button>
+        </div>
+        <div class="account {% if app.user %}{% else %}hidden{% endif %}">
+          <img src="img/ava.jpg">
+          <div class="menu">
+            <div></div>
+            <div></div>
+            <div></div>
+          </div>
+        </div>
+        <ul id="catalog" class="hidden">
+          <li>
+            <a href="films">Фильмы</a>
+            <a href="films">Сериалы</a>
+            <a href="films">Мультфильмы</a>
+            <a href="compilations">Подборки</a>
+            <a href="new">Новинки</a>
+          </li>
+        </ul>
+        <div id="menu" class="hidden">
+            <li><a href="subscriptions">Подписки</a></li>
+            <li><a href="settings">Настройки</a></li>
+            <li><a href="{{ path('app_logout') }}" id="logOut">Выйти</a></li>
+        </div>
+        <div class="burger">
+          <div></div>
+          <div></div>
+          <div></div>
+        </div>
+        <ul class="list_burger hidden">
+          <li class="first_menu">
+            <a id="catalog_button_burger"><img src="img/catalog.png"><p>Каталог</p></a>
+            <div id="catalog_burger" class="hidden">
+
+                  <a href="films">Фильмы</a>
+                  <a href="films">Сериалы</a>
+                  <a href="films">Мультфильмы</a>
+                  <a href="compilations">Подборки</a>
+                  <a href="new">Новинки</a>
+
+            </div>
+            <a href="search"><img src="img/search.png"><p>Поиск</p></a>
+            <a href="favorites" class="now"><img src="img/favorites.png"><p>Избранное</p></a>
+          </li>
+
+          <li class="login_burger">
+              <button type="button" name="button" id="login_burger">Вход</button>
+              <button type="button" name="button" id="signup_burger">Регистрация</button>
+          </li>
+
+          <li class="account_burger hidden">
+              <img src="img/ava.jpg">
+              <div id="menu_burger" class="hidden">
+                    <a href="subscriptions">Подписки</a>
+                    <a href="settings">Настройки</a>
+                    <a id="logOut_burger">Выйти</a>
+              </div>
+          </li>
+
+        </ul>
+      </ul>
+
+
+
+    </nav>
+
+
+      <section id="main">
+        <h1>Избранное</h1>
+        <div class="wrap">
+          <div class="no_content">
+            <h2>Упс... Здесь пока пусто</h2>
+            <a href="films">Перейти в каталог</a>
+          </div>
+        </div>
+      </section>
+
+
+    <footer>
+      <div class="help_doc">
+        <div class="help">
+          <p>Поддержка</p>
+          <p>support@kino.ru</p>
+          <p>8(888)888-88-88</p>
+        </div>
+        <div class="doc">
+          <p>©2020 ООО «Кино» 18+</p>
+          <a href="#">Пользовательские соглашения</a>
+          <a href="#">Политика конфиденциальности</a>
+        </div>
+      </div>
+    </footer>
+    <div class="wrapper_login {% if (error is defined) and (error) %}{% else %}hidden{% endif %}">
+      <div class="modal login {% if (error is defined) and (error) %}{% else %}hidden{% endif %}">
+        <p>Войдите для доступа к просмотру, загрузкам и избранному</p>
+
+        <form class="form_modal" method="post" action="{{ path('app_login') }}">
+          {% if (error is defined) and (error) %}
+            <div style="color: red" class="alert alert-danger">{{ error.messageKey|trans(error.messageData, 'security') }}</div>
+          {% endif %}
+          <label style="color: white" for="inputEmail">Email</label>
+          <input type="email" value="{{ last_username ?? '' }}" name="email" id="inputEmail" class="form-control" autocomplete="email" required autofocus>
+          <label style="color: white" for="inputPassword">Пароль</label>
+          <input type="password" name="password" id="inputPassword" class="form-control" autocomplete="current-password" required>
+
+          <input type="hidden" name="_csrf_token"
+                 value="{{ csrf_token('authenticate') }}"
+          >
+
+          <button class="btn btn-lg btn-primary" type="submit">
+            Вход
+          </button>
+        </form>
+
+        <div class="or">
+          <div></div>
+          <p>или</p>
+          <div></div>
+        </div>
+        <p>Войдите с помощью соц.сетей</p>
+        <div class="social_modal">
+          <a href="https://vk.com" target="_blank"><img src="img/vk.png"></a>
+          <a href="https://facebook.com" target="_blank"><img src="img/fb.png"></a>
+          <a href="https://twitter.com" target="_blank"><img src="img/twitter.png"></a>
+          <a href="https://instagram.com" target="_blank"><img src="img/inst.png"></a>
+          <a href="https://youtube.com" target="_blank"><img src="img/yt.png"></a>
+        </div>
+        <p>Ещё нет аккаунта? <span id="toSignup">Зарегистрируйтесь</span></p>
+        <img src="img/close.png" class="close" id="close_login">
+      </div>
+    </div>
+    <div class="wrapper_signup hidden">
+    <div class="modal hidden signup">
+        <p>Зарегистрируйтесь для просмотра <br>и загрузки фильмов и сериалов</p>
+        <div id="success" style="color: green; display: none" class="alert alert-danger">Успешно</div>
+        <div class="form_modal">
+            <input type="text" id="regEmail" name="login" placeholder="E-mail">
+            <input type="password" id="regPassword" name="password" placeholder="Пароль">
+            <p>не менее 8 символов</p>
+            <div class="agree">
+                <div class="check"></div>
+                <p>Я согласен с условиями пользовательского соглашения и даю согласие на обработку моих персональных
+                    данных</p>
+            </div>
+
+            <button name="button" id="re">Зарегистрироваться</button>
+            <img onclick="openPass()" src="img/show.png" class="show_modal">
+        </div>
+        <div class="or">
+            <div></div>
+            <p>или</p>
+            <div></div>
+        </div>
+        <p>Зарегистрируйтесь с помощью соц.сетей</p>
+        <div class="social_modal">
+            <a href="https://vk.com" target="_blank"><img src="img/vk.png"></a>
+            <a href="https://facebook.com" target="_blank"><img src="img/fb.png"></a>
+            <a href="https://twitter.com" target="_blank"><img src="img/twitter.png"></a>
+            <a href="https://instagram.com" target="_blank"><img src="img/inst.png"></a>
+            <a href="https://youtube.com" target="_blank"><img src="img/yt.png"></a>
+        </div>
+        <p>Уже зарегистрированы? <span id="toLogin">Войти в аккаунт</span></p>
+        <img src="img/close.png" class="close" id="close_signup">
+    </div>
+</div>
+    <script src="js/modal.js"></script>
+<script>
+      document.addEventListener('DOMContentLoaded', ()=> {
+        document.getElementById('re').addEventListener('click',async (e) => {
+          let email = document.getElementById('regEmail').value
+          let password =  document.getElementById('regPassword').value
+          let data = await fetch('{{ path('reg') }}', {
+            method: 'POST',
+            body: JSON.stringify({
+              email: email,
+              password: password
+            })
+          }).catch(reason => reason)
+          if (data.status === 200){
+            document.getElementById('success').style.display = 'block'
+          } else {
+
+          }
+        });
+      })
+    </script></body>
+</html>

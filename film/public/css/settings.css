@@ -1,0 +1,221 @@
+@import url(pattern.css);
+
+#main{
+  background-color: #141414;
+  padding-top: 140px;
+}
+h1{
+  font-size: 60px;
+  font-weight: 600;
+  color:#fff;
+  width: 1260px;
+  margin: 10px auto;
+}
+.wrap{
+  width: 1260px;
+  padding-bottom: 50px;
+  border-top: 2px solid #fff;
+  border-bottom: 2px solid #fff;
+  margin: 0 auto;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+}
+
+h2{
+  font-size: 35px;
+  color: #fff;
+  margin: 0;
+  margin-top: 40px;
+  margin-bottom: 10px;
+}
+.cards{
+  display: flex;
+}
+.card{
+  width: 400px;
+  height: 216px;
+  border-radius: 10px;
+  border: 2px solid #fff;
+  margin-right: 20px;
+  position: relative;
+  transition-duration: .3s;
+}
+.added.hidden{
+  visibility: hidden;
+  opacity: 0;
+  display: none;
+}
+.add{
+  display: flex;
+  justify-content: center;
+  flex-direction: column;
+  align-items: center;
+}
+#add_card{
+  transform: rotate(45deg);
+  width: 80px;
+  height: 80px;
+  cursor: pointer;
+}
+.add p{
+  font-size: 21px;
+  color: #fff;
+  margin-bottom: 0;
+}
+.card:first-of-type > p{
+  text-align: center;
+  margin: 0;
+  font-size: 30px;
+  font-weight: 600;
+  color: #fff;
+  margin-top: 60px;
+  margin-bottom: 40px;
+}
+#delete_card{
+  position: absolute;
+  width: 30px;
+  height: 30px;
+  top: -10px;
+  right: -10px;
+  border: 2px solid #fff;
+  border-radius: 25px;
+  background-color: #141414;
+  cursor: pointer;
+  transition-duration: .3s;
+}
+#delete_card:hover{
+  transform: rotate(90deg);
+}
+.card_bottom{
+  display: flex;
+  justify-content: space-between;
+  width: 300px;
+  font-size: 30px;
+  margin: 0 auto;
+  color: #fff;
+}
+.card_bottom p{
+  margin: 0;
+}
+
+.active_devices{
+  margin-top: 30px;
+}
+.change_pass{
+  margin-top: 30px;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+}
+.active_devices > p, .change_pass > p{
+  font-size: 18px;
+  color: #fff;
+  margin-top: 0;
+  width: 550px;
+}
+.device{
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  border-radius: 10px;
+  border: 2px solid #fff;
+  width: 400px;
+  height: 216px;
+}
+.device img{
+    width: 100px;
+    height: 100px;
+}
+.device p{
+  margin-top: 10px;
+  font-size: 25px;
+  font-weight: 600;
+  color: #fff;
+  margin-bottom: 0;
+}
+
+.change_pass input{
+  width: 240px;
+  height: 40px;
+  padding-left: 10px;
+  font-size: 18px;
+  border: none;
+  border-radius: 2px;
+  margin-top: 10px;
+  transition-duration: .3s;
+}
+.change_pass button{
+  width: 250px;
+  text-align: center;
+  border: 0;
+  border-radius: 2px;
+  background-color: #feb912;
+  color: #000;
+  height: 40px;
+  font-size: 18px;
+  font-weight: 600;
+  cursor: pointer;
+  margin-top: 10px;
+  transition-duration: .3s;
+}
+.change_pass button:hover{
+  background-color: #dd9c00;
+}
+
+@media (max-width:850px){
+  #main{
+    padding-top: 100px;
+  }
+  h1{
+    width: 700px;
+    font-size: 40px;
+  }
+  .wrap{
+    width: 700px;
+  }
+  .cards{
+    flex-direction: column;
+  }
+  .card{
+    margin-bottom: 20px;
+  }
+  .active_devices{
+    margin-top: 0;
+  }
+}
+
+@media (max-width: 380px){
+  h1{
+    width: 350px;
+  }
+  .wrap{
+    width: 350px;
+  }
+  .account{
+    display: none;
+  }
+  h2{
+    font-size: 30px;
+    width: 350px;
+  }
+  .card, .device{
+    width: 350px;
+    height: 189px;
+  }
+  #delete_card{
+    right: -5px;
+    top: -5px;
+  }
+  .active_devices > p, .change_pass > p{
+    width: 350px;
+  }
+  .saved_cards{
+    width: 350px;
+  }
+  .change_pass{
+    align-items: center;
+    text-align: center;
+  }
+}
